@@ -3,7 +3,7 @@ model = dict(
     backbone=dict(type='MobileNetV3Cifar', arch='small'),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
-        type='StackedLinearClsHead',
+        type='StackedLinearClsHeadWithPred',
         num_classes=100,
         in_channels=576,
         mid_channels=[1280],

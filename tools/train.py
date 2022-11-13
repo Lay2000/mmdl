@@ -13,7 +13,6 @@ from mmcv import Config, DictAction
 from mmcv.runner import get_dist_info, init_dist
 
 from mmcls import __version__
-from mmcls.apis import init_random_seed, set_random_seed, train_model
 from mmcls.datasets import build_dataset
 from mmcls.models import build_classifier
 from mmcls.utils import (auto_select_device, collect_env, get_root_logger,
@@ -21,9 +20,11 @@ from mmcls.utils import (auto_select_device, collect_env, get_root_logger,
 
 import sys
 sys.path.append(r"./")
+from mmdl.apis import init_random_seed, set_random_seed, train_model
 import mmdl.models.backbones
 import mmdl.models.layers
 import mmdl.models.classifiers
+import mmdl.models.heads
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a model')

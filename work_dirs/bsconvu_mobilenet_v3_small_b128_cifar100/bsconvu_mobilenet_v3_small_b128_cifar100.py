@@ -4,7 +4,7 @@ model = dict(
         type='MobileNetV3Cifar', arch='small', conv_cfg=dict(type='BSConvU')),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
-        type='StackedLinearClsHead',
+        type='StackedLinearClsHeadWithPred',
         num_classes=100,
         in_channels=576,
         mid_channels=[1280],
