@@ -172,7 +172,7 @@ class StackedLinearClsHeadWithPred(ClsHead):
 
         self.pred_correct += correct_count
         self.pred_total += len(gt_label)
-        losses = self.loss(cls_score, gt_label, **kwargs)
+        losses = self.loss(cls_score, gt_label.float(), **kwargs)
         return losses
 
     def reset_pred(self):
