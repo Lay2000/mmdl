@@ -1,5 +1,4 @@
 *.pth
 data/
+__init__.*
 *.pyc
-*.log
-mmdl/__pycache__/*
