@@ -162,14 +162,16 @@ class StackedLinearClsHeadWithPred(ClsHead):
     def forward_train(self, x, gt_label, **kwargs):
         x = self.pre_logits(x)
         cls_score = self.fc(x)
-        pred = (
-                F.softmax(cls_score, dim=1) if cls_score is not None else None)
-        correct_count = int((pred.argmax(dim=1) == gt_label).sum())
+        pred = (F.softmax(cls_score, dim=1) if cls_score is not None else None)
+        if len(gt_label.shape) == 1:
+            correct_count = int((pred.argmax(dim=1) == gt_label).sum())
+        else:
+            correct_count = int((pred.argmax(dim=1) == gt_label.argmax(dim=1)).sum())
+        # pdb.set_trace()
         # print("Correct:{}, Total:{}".format(correct_count, 128))
 
         self.pred_correct += correct_count
         self.pred_total += len(gt_label)
-        # pdb.set_trace()
         losses = self.loss(cls_score, gt_label, **kwargs)
         return losses
 
