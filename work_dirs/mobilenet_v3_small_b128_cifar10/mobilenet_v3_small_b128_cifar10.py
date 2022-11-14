@@ -1,10 +1,10 @@
 model = dict(
     type='ImageClassifier',
-    backbone=dict(type='MobileNetV3', arch='small'),
+    backbone=dict(type='MobileNetV3Cifar', arch='small'),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
         type='StackedLinearClsHead',
-        num_classes=10,
+        num_classes=100,
         in_channels=576,
         mid_channels=[1280],
         act_cfg=dict(type='HSwish'),
@@ -82,7 +82,7 @@ data = dict(
         test_mode=True))
 optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
-lr_config = dict(policy='step', step=[120, 170])
+lr_config = dict(policy='step', step=[100, 150, 180])
 runner = dict(type='EpochBasedRunner', max_epochs=200)
 checkpoint_config = dict(interval=10, max_keep_ckpts=1)
 log_config = dict(
@@ -95,4 +95,4 @@ load_from = None
 resume_from = None
 workflow = [('train', 1)]
 work_dir = './work_dirs/mobilenet_v3_small_b128_cifar10'
-gpu_ids = [0]
+gpu_ids = range(0, 1)

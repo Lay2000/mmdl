@@ -11,6 +11,6 @@
 #SBATCH -e ./logs/error.err
 
 CONFIG=$1
-module load anaconda
-source activate mmdl
+# module load anaconda
+source activate mmdl2
 python -u tools/train.py ${CONFIG} --launcher="slurm"
