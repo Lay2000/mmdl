@@ -167,12 +167,13 @@ class StackedLinearClsHeadWithPred(ClsHead):
             correct_count = int((pred.argmax(dim=1) == gt_label).sum())
         else:
             correct_count = int((pred.argmax(dim=1) == gt_label.argmax(dim=1)).sum())
+            gt_label = gt_label.float()
         # pdb.set_trace()
         # print("Correct:{}, Total:{}".format(correct_count, 128))
 
         self.pred_correct += correct_count
         self.pred_total += len(gt_label)
-        losses = self.loss(cls_score, gt_label.float(), **kwargs)
+        losses = self.loss(cls_score, gt_label,**kwargs)
         return losses
 
     def reset_pred(self):

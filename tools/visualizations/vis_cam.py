@@ -16,6 +16,14 @@ from mmcls import digit_version
 from mmcls.apis import init_model
 from mmcls.datasets.pipelines import Compose
 
+import sys
+sys.path.append(r"./")
+from mmdl.apis import init_random_seed, set_random_seed, train_model
+import mmdl.models.backbones
+import mmdl.models.layers
+import mmdl.models.classifiers
+import mmdl.models.heads
+
 try:
     from pytorch_grad_cam import (EigenCAM, EigenGradCAM, GradCAM,
                                   GradCAMPlusPlus, LayerCAM, XGradCAM)
