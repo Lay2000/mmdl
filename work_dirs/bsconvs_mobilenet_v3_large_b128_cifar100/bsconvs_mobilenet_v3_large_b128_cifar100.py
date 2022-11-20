@@ -94,4 +94,4 @@ load_from = None
 resume_from = None
 workflow = [('train', 1)]
 work_dir = './work_dirs/bsconvs_mobilenet_v3_large_b128_cifar100'
-gpu_ids = [0]
+gpu_ids = range(0, 1)
