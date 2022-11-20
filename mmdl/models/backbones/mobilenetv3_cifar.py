@@ -57,7 +57,43 @@ class MobileNetV3Cifar(BaseBackbone):
                   [3, 672, 112, True, 'HSwish', 1],
                   [5, 672, 160, True, 'HSwish', 2],
                   [5, 960, 160, True, 'HSwish', 1],
-                  [5, 960, 160, True, 'HSwish', 1]]
+                  [5, 960, 160, True, 'HSwish', 1]],
+        'large_6': [[3, 16, 16, False, 'ReLU6', 1],
+                  [3, 64, 24, False, 'ReLU6', 1],
+                  [3, 72, 24, False, 'ReLU6', 1],
+                  [5, 72, 40, True, 'ReLU6', 2],
+                  [5, 120, 40, True, 'ReLU6', 1],
+                  [5, 120, 40, True, 'ReLU6', 1],
+                  [3, 240, 80, False, 'HSwish', 2],
+                  [3, 200, 80, False, 'HSwish', 1],
+                  [3, 184, 80, False, 'HSwish', 1],
+                  [3, 184, 80, False, 'HSwish', 1],
+                  [3, 480, 112, True, 'HSwish', 1],
+                  [3, 672, 112, True, 'HSwish', 1],
+                  [5, 672, 160, True, 'HSwish', 2],
+                  [5, 960, 160, True, 'HSwish', 1],
+                  [5, 960, 160, True, 'HSwish', 1]],
+        'large_fd': 
+                 [
+                    #[3, 16, 16, False, 'ReLU', 1],
+                  [3, 64, 24, False, 'ReLU', 1],
+                  #[3, 72, 24, False, 'ReLU', 1],
+                  [5, 72, 40, True, 'ReLU', 2],
+                  [5, 120, 40, True, 'ReLU', 1],
+                  [5, 120, 40, True, 'ReLU', 1],
+                  [3, 240, 80, False, 'HSwish', 2],
+                  [3, 200, 80, False, 'HSwish', 1],
+                  #[3, 184, 80, False, 'HSwish', 1],
+                  [3, 184, 80, False, 'HSwish', 1],
+                  [3, 480, 112, True, 'HSwish', 1],
+                  [3, 672, 112, True, 'HSwish', 1],
+                  [3, 672, 112, True, 'HSwish', 1],
+                  [3, 672, 112, True, 'HSwish', 1],
+                  [3, 672, 112, True, 'HSwish', 1],
+                  [3, 672, 112, True, 'HSwish', 1],
+                  [5, 672, 160, True, 'HSwish', 2],
+                  [5, 960, 160, True, 'HSwish', 1],
+                  [5, 960, 160, True, 'HSwish', 1]],
     }  # yapf: disable
 
     def __init__(self,
@@ -80,7 +116,7 @@ class MobileNetV3Cifar(BaseBackbone):
         super(MobileNetV3Cifar, self).__init__(init_cfg)
         assert arch in self.arch_settings
         if out_indices is None:
-            out_indices = (12, ) if arch == 'small' else (16, )
+            out_indices = (12, ) if arch == 'small' else (len(self.arch_settings[arch])+1, )
         for order, index in enumerate(out_indices):
             if index not in range(0, len(self.arch_settings[arch]) + 2):
                 raise ValueError(
