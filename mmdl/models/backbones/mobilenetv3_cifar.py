@@ -3,7 +3,7 @@ from mmcv.cnn import ConvModule
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmcls.models.builder import BACKBONES
-from mmcls.models.utils import InvertedResidual
+from ..layers import InvertedResidual
 from mmcls.models.backbones.base_backbone import BaseBackbone
 
 
@@ -93,6 +93,7 @@ class MobileNetV3Cifar(BaseBackbone):
                              f'But received {frozen_stages}')
         self.arch = arch
         self.conv_cfg = conv_cfg
+        self.init_conv_cfg = None
         self.norm_cfg = norm_cfg
         self.out_indices = out_indices
         self.frozen_stages = frozen_stages
@@ -114,7 +115,7 @@ class MobileNetV3Cifar(BaseBackbone):
             kernel_size=3,
             stride=1,
             padding=1,
-            conv_cfg=self.conv_cfg,
+            conv_cfg=self.init_conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=dict(type='HSwish'))
         self.add_module('layer0', layer)
@@ -161,7 +162,7 @@ class MobileNetV3Cifar(BaseBackbone):
             kernel_size=1,
             stride=1,
             padding=0,
-            conv_cfg=self.conv_cfg,
+            conv_cfg=self.init_conv_cfg,
             norm_cfg=self.norm_cfg,
             act_cfg=dict(type='HSwish'))
         layer_name = 'layer{}'.format(len(layer_setting) + 1)
