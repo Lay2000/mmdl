@@ -100,5 +100,5 @@ lr_config = dict(
     warmup_ratio=0.1,
     warmup_iters=5,
     warmup_by_epoch=True)
-work_dir = './work_dirs\mobilenet_v3_large_b128_cifar100_shiqi'
+work_dir = './work_dirs\mobilenet_v3_large_b128_cifar100_warmup'
 gpu_ids = [0]
