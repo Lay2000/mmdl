@@ -26,3 +26,8 @@ python tools/train.py configs/mobilenet_v3/mobilenet_v3_small_b128_cifar10.py
 ```shell
 sbatch tools/server_train.sh configs/mobilenet_v3/mobilenet_v3_small_b128_cifar10.py
 ```
+
+## Draw the training graph
+```shell
+python tools/analysis_tools/analyze_logs.py plot_curve work_dirs/xxx directory/xxx.log.json --keys train_accuracy accuracy_top-1 --title xxx --legend train val --out xxx.jpg 
+```

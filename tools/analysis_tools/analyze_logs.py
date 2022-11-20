@@ -70,7 +70,7 @@ def plot_phase_train(metric, log_dict, epochs, curve_label, json_log):
         ys.append(np.array(log_dict[epoch][metric][:len(iters)]))
     xs = np.concatenate(xs)
     ys = np.concatenate(ys)
-    plt.xlabel('Epochs')
+    plt.xlabel('Epochs', fontsize=25)
     plt.plot(xs, ys, label=curve_label, linewidth=0.75)
 
 
@@ -80,7 +80,7 @@ def plot_phase_val(metric, log_dict, epochs, curve_label, json_log):
     xs = [e for e in epochs if metric in log_dict[e]]
     ys = [log_dict[e][metric] for e in xs if metric in log_dict[e]]
     assert len(xs) > 0, (f'{json_log} does not contain metric {metric}')
-    plt.xlabel('Epochs')
+    plt.xlabel('Epochs', fontsize=25)
     plt.plot(xs, ys, label=curve_label, linewidth=0.75)
 
 
@@ -98,7 +98,7 @@ def plot_curve_helper(log_dicts, metrics, args, legend):
             else:
                 plot_phase_train(metric, log_dict, epochs, curve_label,
                                  json_log)
-            plt.legend()
+            plt.legend(fontsize=20)
 
 
 def plot_curve(log_dicts, args):
@@ -118,6 +118,13 @@ def plot_curve(log_dicts, args):
     wind_w, wind_h = args.window_size.split('*')
     wind_w, wind_h = int(wind_w), int(wind_h)
     plt.figure(figsize=(wind_w, wind_h))
+    parameters = {
+        'axes.labelsize': 25,
+        'axes.titlesize': 25,
+        'xtick.labelsize': 20,
+        'ytick.labelsize': 20,
+        'legend.fontsize': 20}
+    plt.rcParams.update(parameters)
 
     # get legends and metrics
     legends = get_legends(args)
@@ -128,7 +135,7 @@ def plot_curve(log_dicts, args):
 
     # set title and show or save
     if args.title is not None:
-        plt.title(args.title)
+        plt.title(args.title, fontsize=25)
     if args.out is None:
         plt.show()
     else:
