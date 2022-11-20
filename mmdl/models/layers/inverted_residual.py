@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 import torch.utils.checkpoint as cp
 from mmcv.cnn import ConvModule
@@ -6,6 +5,7 @@ from mmcv.cnn.bricks import DropPath
 from mmcv.runner import BaseModule
 
 from mmcls.models.utils.se_layer import SELayer
+from .nam_layer import NAMLayer
 
 
 class InvertedResidual(BaseModule):
@@ -44,14 +44,16 @@ class InvertedResidual(BaseModule):
                  act_cfg=dict(type='ReLU'),
                  drop_path_rate=0.,
                  with_cp=False,
-                 init_cfg=None):
+                 init_cfg=None,
+                 with_nam=False):
         super(InvertedResidual, self).__init__(init_cfg)
         self.with_res_shortcut = (stride == 1 and in_channels == out_channels)
         assert stride in [1, 2]
         self.with_cp = with_cp
+        self.with_nam = with_nam
         self.drop_path = DropPath(
             drop_path_rate) if drop_path_rate > 0 else nn.Identity()
-        self.with_se = se_cfg is not None
+        self.with_se = se_cfg is not None and not self.with_nam
         self.with_expand_conv = (mid_channels != in_channels)
 
         if self.with_se:
@@ -64,7 +66,7 @@ class InvertedResidual(BaseModule):
                 kernel_size=1,
                 stride=1,
                 padding=0,
-                conv_cfg=None if conv_cfg['type'] == 'BSConvS' else conv_cfg,
+                conv_cfg=None if conv_cfg != None and conv_cfg['type'] == 'BSConvS' else conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg)
         self.depthwise_conv = ConvModule(
@@ -74,11 +76,13 @@ class InvertedResidual(BaseModule):
             stride=stride,
             padding=kernel_size // 2,
             groups=mid_channels,
-            conv_cfg=None if conv_cfg['type'] == 'BSConvS' else conv_cfg,
+            conv_cfg=None if conv_cfg != None and conv_cfg['type'] == 'BSConvS' else conv_cfg,
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
         if self.with_se:
             self.se = SELayer(**se_cfg)
+        if self.with_nam:
+            self.nam = NAMLayer(channels=mid_channels, shape=32)
         self.linear_conv = ConvModule(
             in_channels=mid_channels,
             out_channels=out_channels,
@@ -109,6 +113,8 @@ class InvertedResidual(BaseModule):
 
             if self.with_se:
                 out = self.se(out)
+            if self.with_nam:
+                out = self.nam(out)
 
             out = self.linear_conv(out)
 

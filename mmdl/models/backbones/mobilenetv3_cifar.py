@@ -68,6 +68,7 @@ class MobileNetV3Cifar(BaseBackbone):
                  frozen_stages=-1,
                  norm_eval=False,
                  with_cp=False,
+                 with_nam=False,
                  init_cfg=[
                      dict(
                          type='Kaiming',
@@ -99,6 +100,7 @@ class MobileNetV3Cifar(BaseBackbone):
         self.frozen_stages = frozen_stages
         self.norm_eval = norm_eval
         self.with_cp = with_cp
+        self.with_nam = with_nam
 
         self.layers = self._make_layer()
         self.feat_dim = self.arch_settings[arch][-1][1]
@@ -148,7 +150,8 @@ class MobileNetV3Cifar(BaseBackbone):
                 conv_cfg=self.conv_cfg,
                 norm_cfg=self.norm_cfg,
                 act_cfg=dict(type=act),
-                with_cp=self.with_cp)
+                with_cp=self.with_cp,
+                with_nam=self.with_nam)
             in_channels = out_channels
             layer_name = 'layer{}'.format(i + 1)
             self.add_module(layer_name, layer)
