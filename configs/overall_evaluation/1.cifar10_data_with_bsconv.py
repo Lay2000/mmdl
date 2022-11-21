@@ -13,6 +13,6 @@ model = dict(
         conv_cfg=dict(type='BSConvS')
     ),
     train_cfg=dict(augments=[
-        dict(type='BatchCutMix', alpha=1.0, prob=0.5, num_classes=100),
+        dict(type='BatchCutMix', alpha=1.0, prob=0.5, num_classes=10),
 ])
 )
